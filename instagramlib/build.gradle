@@ -12,7 +12,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -30,6 +29,22 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+
+
     compileOnly 'org.projectlombok:lombok:1.18.0'
     annotationProcessor 'org.projectlombok:lombok:1.18.0'
+
+
+    // Persistent cookie jar to save our cookies.
+    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+
+    // Request client.
+    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:3.11.0"
+
+    // Hex.
+    implementation 'commons-codec:commons-codec:1.9'
+
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
 }
