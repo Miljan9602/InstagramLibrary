@@ -30,4 +30,5 @@ public interface InstagramConstants {
 
     String API_KEY_VERSION = "4";
 
+    String INSTAGRAM_HOST = "i.instagram.com";
 }

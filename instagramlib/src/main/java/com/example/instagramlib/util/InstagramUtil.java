@@ -20,6 +20,7 @@ import org.apache.commons.codec.binary.Hex;
 
 import java.net.URLEncoder;
 import java.security.Key;
+import java.util.UUID;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -60,6 +61,10 @@ public class InstagramUtil {
         String signedBody = generateHash(InstagramConstants.API_KEY, payload);
         return "ig_sig_key_version=" + InstagramConstants.API_KEY_VERSION + "&signed_body=" + signedBody + '.'
                 + parsedData;
+    }
+
+    public static String generateDeviceId() {
+        return "android-" + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16);
     }
 
     public static String generateUuid(boolean dash) {

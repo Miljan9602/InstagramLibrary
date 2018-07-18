@@ -16,14 +16,35 @@
 
 package com.example.instagramlib;
 
+import android.content.Context;
+
+
+import com.example.instagramlib.request.InstagramRequest;
+import com.example.instagramlib.util.InstagramUtil;
+import com.franmontiel.persistentcookiejar.ClearableCookieJar;
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.io.Serializable;
-import java.net.CookieStore;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
+import okhttp3.Cookie;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
+
+import static com.example.instagramlib.util.Constants.*;
+import static com.example.instagramlib.util.InstagramConstants.*;
 
 
 /**
@@ -51,14 +72,18 @@ public class Instagram implements Serializable {
     @Setter
     protected long userId;
 
+    private final Set<Cookie> cookieStore = new HashSet();
+
     @Getter
     @Setter
     protected String rankToken;
     @Getter
-    @Setter
-    protected CookieStore cookieStore;
+    protected boolean isLoggedIn;
     @Getter
-    private boolean isLoggedIn;
+    @Setter
+    protected Response lastResponse;
+    protected OkHttpClient client;
+    private HttpUrl url = new HttpUrl.Builder().scheme(HTTPS).host(INSTAGRAM_HOST).build();
 
 
     /**
@@ -73,12 +98,58 @@ public class Instagram implements Serializable {
 
 
     @Builder
-    public Instagram(String username, String password, String uuid, long userId, CookieStore cookieStore) {
+    public Instagram(String username, String password, String uuid, long userId) {
         this.username = username;
         this.password = password;
         this.uuid = uuid;
         this.userId = userId;
-        this.cookieStore = cookieStore;
     }
-    
+
+
+    /**
+     * Setup before sending request. This has the be called everytime before login.
+     *
+     * @param context for writing cookies to the memory.
+     */
+    public void setup(@NonNull final Context context) {
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+            throw new IllegalArgumentException("You must provide a username and password to login.");
+        }
+
+        if (context == null) {
+            throw new NullPointerException("Context can't be null.");
+        }
+
+        deviceId = InstagramUtil.generateDeviceId();
+
+        if (StringUtils.isEmpty(uuid)) uuid = InstagramUtil.generateUuid(true);
+
+        advertisingId = InstagramUtil.generateUuid(true);
+
+        ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(context));
+        this.client = (new OkHttpClient.Builder()).cookieJar(cookieJar).build();
+    }
+
+
+    /**
+     * Pulls out cookie when we hold in our cookiejar.
+     *
+     * @param cookieName name of the cookie we need to pull.
+     * @return value for the cookieName.
+     */
+    public Cookie getCookie(String cookieName) {
+        Iterator var2 = this.client.cookieJar().loadForRequest(url).iterator();
+
+        Cookie cookie;
+        do {
+            if (!var2.hasNext()) {
+                return null;
+            }
+
+            cookie = (Cookie) var2.next();
+        } while (!cookie.name().equalsIgnoreCase(cookieName));
+
+        return cookie;
+    }
+
 }

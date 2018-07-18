@@ -22,5 +22,6 @@ package com.example.instagramlib.request;
  * @author Miljan Rakita on 7/18/18.
  * rakitamiljan@yahoo.com
  */
-public abstract class InstagramRequest {
+public abstract class InstagramRequest<T> {
+
 }
