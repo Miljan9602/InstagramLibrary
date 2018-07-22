@@ -16,6 +16,16 @@
 
 package com.example.instagramlib.request;
 
+import android.util.Log;
+
+import com.example.instagramlib.util.Constants;
+import com.example.instagramlib.util.InstagramConstants;
+
+import java.io.IOException;
+
+import okhttp3.Request;
+import okhttp3.Response;
+
 /**
  * InstagramLib API
  *
@@ -23,4 +33,33 @@ package com.example.instagramlib.request;
  * rakitamiljan@yahoo.com
  */
 public abstract class InstagramGetRequest<T> extends InstagramRequest<T> {
+
+    private static final String TAG = "InstagramGetRequest";
+
+    @Override
+    public String getMethod() {
+        return Constants.GET_METHOD;
+    }
+
+    @Override
+    public T execute() throws IOException {
+        Request request = (new Request.Builder()).url("https://i.instagram.com/api/v1/" + this.getUrl())
+                .addHeader("X-IG-Capabilities", "36r/Bw==")
+                .addHeader("X-IG-Connection-Type", "WiFi")
+                .addHeader("X-IG-Connection-Speed", "33kbps")
+                .addHeader("X-IG-App-ID", "124024574287414")
+                .addHeader("X-IG-ABR-Connection-Speed-KBPS", "0")
+                .addHeader("Connection", "close")
+                .addHeader("Accept", "*/*")
+                .addHeader("Cookie2", "$Version=1")
+                .addHeader("Accept-Language", "en-US")
+                .addHeader("User-Agent", InstagramConstants.USER_AGENT).build();
+
+        Response response = this.instagram.getClient().newCall(request).execute();
+        this.instagram.setLastResponse(response);
+        int resultCode = response.code();
+        String content = response.body().string();
+        return this.parseResult(resultCode, content);
+    }
+
 }

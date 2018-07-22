@@ -13,47 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.example.instagramlib.request;
-
-import com.example.instagramlib.Instagram;
-
-import java.io.IOException;
+package com.example.instagramlib.response;
 
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * InstagramLib API
  *
- * @author Miljan Rakita on 7/18/18.
+ * @author Miljan Rakita on 7/19/18.
  * rakitamiljan@yahoo.com
  */
-public abstract class InstagramRequest<T> {
+public class StatusResponse {
 
-
-    @Setter
     @Getter
-    protected Instagram instagram;
-
-    public void setInstagram(Instagram instagram) {
-        this.instagram = instagram;
-    }
-
-    public abstract String getUrl();
-
-    public abstract String getMethod();
-
-    public String getPayload() {
-        return null;
-    }
-
-    public abstract T parseResult(int var1, String var2);
-
-    public abstract T execute() throws IOException;
-
-    public boolean requiresLogin() {
-        return true;
-    }
-
+    protected String status;
 }

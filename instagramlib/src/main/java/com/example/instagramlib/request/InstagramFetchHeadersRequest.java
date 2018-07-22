@@ -13,47 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.example.instagramlib.request;
 
-import com.example.instagramlib.Instagram;
+import android.util.Log;
+
+import com.example.instagramlib.response.StatusResponse;
+import com.example.instagramlib.util.InstagramUtil;
 
 import java.io.IOException;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * InstagramLib API
  *
- * @author Miljan Rakita on 7/18/18.
+ * @author Miljan Rakita on 7/19/18.
  * rakitamiljan@yahoo.com
  */
-public abstract class InstagramRequest<T> {
+public class InstagramFetchHeadersRequest extends InstagramGetRequest<StatusResponse> {
 
+    private static final String TAG = InstagramFetchHeadersRequest.class.getSimpleName();
 
-    @Setter
-    @Getter
-    protected Instagram instagram;
-
-    public void setInstagram(Instagram instagram) {
-        this.instagram = instagram;
+    @Override
+    public String getUrl() {
+        return "si/fetch_headers/?challenge_type=signup&guid=" + InstagramUtil.generateUuid(false);
     }
 
-    public abstract String getUrl();
-
-    public abstract String getMethod();
-
-    public String getPayload() {
-        return null;
+    @Override
+    public StatusResponse parseResult(int var1, String var2) {
+        Log.d(TAG, "parseResult: " + var1);
+        Log.d(TAG, "parseResult: " + var2);
+        return new StatusResponse();
     }
-
-    public abstract T parseResult(int var1, String var2);
-
-    public abstract T execute() throws IOException;
 
     public boolean requiresLogin() {
-        return true;
+        return false;
     }
-
 }

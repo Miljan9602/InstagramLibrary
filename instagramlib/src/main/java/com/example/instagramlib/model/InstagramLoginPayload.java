@@ -15,6 +15,9 @@
  */
 package com.example.instagramlib.model;
 
+import lombok.Builder;
+import lombok.Getter;
+
 /**
  * InstagramLib API
  *
@@ -23,22 +26,29 @@ package com.example.instagramlib.model;
  */
 public class InstagramLoginPayload {
 
+    @Getter
     private String username;
+    @Getter
     private String phone_id;
-    private String _csrftoken;
+    @Getter
+    private String csrftoken;
+    @Getter
     private String guid;
+    @Getter
     private String device_id;
+    @Getter
     private String password;
+    @Getter
     private int login_attempt_account = 0;
 
-    InstagramLoginPayload(String username, String password, String phone_id, String _csrftoken, String guid, String device_id, int login_attempt_account) {
+    @Builder
+    InstagramLoginPayload(String username, String password, String phone_id, String _csrftoken, String guid, String device_id) {
         this.username = username;
         this.password = password;
         this.phone_id = phone_id;
-        this._csrftoken = _csrftoken;
+        this.csrftoken = _csrftoken;
         this.guid = guid;
         this.device_id = device_id;
-        this.login_attempt_account = login_attempt_account;
     }
 
 }

@@ -34,6 +34,15 @@ public interface Constants {
     String HTTPS = "https";
     String HTTP = "http";
 
+
     String POST_METHOD = "POST";
     String GET_METHOD = "GET";
+
+    String STATUS_OK = "ok";
+
+
+    // Errors
+    String ERROR_INVALID_CREDENTIALS = "You must provide a username and password to login.";
+    String ERROR_REQUIRES_LOGIN = "Need to login first!";
+    String ERROR_NULLABLE_CONTEXT = "Context cant be null.";
 }

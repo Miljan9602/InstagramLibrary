@@ -47,4 +47,6 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.9'
 
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+
+    implementation 'com.github.FasterXML:jackson-databind:2.6.0-rc3b'
 }

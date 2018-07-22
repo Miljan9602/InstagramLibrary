@@ -23,8 +23,8 @@ package com.example.instagramlib;
  */
 
 /**
- * If request does not requires user to be logged in, needs to implement
- * this interface.
+ * All verification requests need to implement this interface.
+ * This interface does not requier user to be logged in to send requests.
  */
-public interface IRequestDoesNotRequireLogin {
+public interface IInstagramVerification {
 }
