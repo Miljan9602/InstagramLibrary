@@ -13,32 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.example.instagramlib.dataProvider;
 
-package com.example.instagramlib.model;
+import android.content.Context;
 
-import lombok.AllArgsConstructor;
+import com.example.instagramlib.IInstagramDatabaseIUser;
+
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * InstagramLib API
  *
- * @author Miljan Rakita on 8/7/18.
+ * @author Miljan Rakita on 8/8/18.
  * rakitamiljan@yahoo.com
  */
+public class DataProvider {
 
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
-public class InstagramLoginChallenge {
+    private static DataProvider singletone = null;
 
-    private String url;
-    private String apiPath;
-    private boolean hideWebviewHeader;
-    private boolean lock;
-    private boolean logout;
-    private boolean nativeFlow;
+    @Getter
+    private IInstagramDatabaseIUser instagramDataProvider;
+
+    private DataProvider(final Context context) {
+        instagramDataProvider = new DatabaseDataProvider(context);
+    }
+
+    public static DataProvider getSingletone(final Context context) {
+
+        if (singletone == null)
+            singletone = new DataProvider(context);
+
+        return singletone;
+    }
 
 }

@@ -11,6 +11,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.instagramlib.dataProvider.DataProvider;
+import com.example.instagramlib.model.database.InstagramDatabaseUser;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,6 +35,23 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         final Context appContext = InstrumentationRegistry.getTargetContext();
 
+       
         assertEquals("com.example.instagramlib.test", appContext.getPackageName());
+    }
+
+
+    @Test
+    public void test() {
+        final Context appContext = InstrumentationRegistry.getTargetContext();
+
+        InstagramDatabaseUser user = DataProvider.getSingletone(appContext).getInstagramDataProvider().loadInstagramDatabaseUser("asd");
+        String cookies = user.getCookies();
+        Log.d(TAG, "test1: " + user);
+
+        try {
+            Thread.sleep(180000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

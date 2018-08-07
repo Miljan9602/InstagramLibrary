@@ -2,22 +2,16 @@ package com.example.instagramlib.request;
 
 import android.util.Log;
 
-import com.example.instagramlib.exception.ThrottledException;
-import com.example.instagramlib.model.InstagramLoggedUser;
-import com.example.instagramlib.model.InstagramLoginChallenge;
-import com.example.instagramlib.model.InstagramLoginPayload;
-import com.example.instagramlib.model.custom.JSONObject;
+import com.example.instagramlib.model.instagram.InstagramLoggedUser;
+import com.example.instagramlib.model.instagram.InstagramLoginChallenge;
+import com.example.instagramlib.model.instagram.InstagramLoginPayload;
 import com.example.instagramlib.response.InstagramLoginResponse;
-import com.example.instagramlib.response.StatusResponse;
 import com.example.instagramlib.util.InstagramErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONException;
-
-import java.net.HttpURLConnection;
-
-import static android.content.ContentValues.TAG;
+import org.json.JSONObject;
 
 /**
  * InstagramLib API
@@ -108,28 +102,11 @@ public class InstagramLoginRequest extends InstagramPostRequest<InstagramLoginRe
                 }
             } else {
                 object = object.getJSONObject("logged_in_user");
-
                 String pk = String.valueOf(object.getLong("pk"));
                 String username = object.getString("username");
                 String fullName = object.getString("full_name");
 
-
-                InstagramLoggedUser loggedUser = new InstagramLoggedUser.Builder(username, pk, fullName)
-                        .canSeeOrganicInsights(object.getBoolean("can_see_organic_insights"))
-                        .isBusiness(object.getBoolean("is_business"))
-                        .showInsightsTerms(object.getBoolean("show_insights_terms"))
-                        .hasAnonymousProfilePicture(object.getBoolean("has_anonymous_profile_picture"))
-                        .isVerified(object.getBoolean("is_verified"))
-                        .isPrivate(object.getBoolean("is_private"))
-                        .canBoostPost(object.getBoolean("can_boost_post"))
-                        .profilePicUrl(object.getString("profile_pic_url"))
-                        .allowContactsSync(object.getBoolean("allow_contacts_sync"))
-                        .fbuid(object.getString("fbuid"))
-                        .phoneNumber(object.getString("phone_number"))
-                        .countryCode(String.valueOf(object.getInt("country_code")))
-                        .nationalNumber(String.valueOf(object.getLong("national_number")))
-                        .build();
-
+                InstagramLoggedUser loggedUser = new InstagramLoggedUser(username, pk, fullName);
                 response = new InstagramLoginResponse("ok", resultCode, loggedUser);
             }
 

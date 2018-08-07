@@ -13,27 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.example.instagramlib.util;
+package com.example.instagramlib.database;
 
 /**
  * InstagramLib API
  *
- * @author Miljan Rakita on 7/18/18.
+ * @author Miljan Rakita on 8/7/18.
  * rakitamiljan@yahoo.com
  */
-public interface InstagramConstants {
+public class InstagramUserDbSchema {
 
-    //               "http://192.168.0.107:8888/api/v1/";
-    String API_URL = "https://i.instagram.com/api/v1/";
+    public static final class InstagramUserTable {
+        public static final String NAME = "instagram_users";
 
-    String API_KEY = "673581b0ddb792bf47da5f9ca816b613d7996f342723aa06993a3f0552311c7d";
+        public static final class Cols {
+            public static final String ID = "id";
+            public static final String USERNAME = "username";
+            public static final String PK = "pk";
+            public static final String COOKIES = "cookies";
+            public static final String PROFILE_PIC_URL = "profile_pic_url";
+        }
+    }
 
-    String API_KEY_VERSION = "4";
-
-    String INSTAGRAM_HOST = "i.instagram.com";
-
-    String CSRF_TOKEN = "csrftoken";
-
-    String USER_AGENT = "Instagram 26.0.0.18.87 (iPhone7,1; iOS 10_2; en_RS; en-RS; scale=2.61; gamut=normal; 1080x1920) AppleWebKit/420+";
 }

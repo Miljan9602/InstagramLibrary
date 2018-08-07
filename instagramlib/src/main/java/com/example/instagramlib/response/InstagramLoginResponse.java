@@ -18,8 +18,8 @@ package com.example.instagramlib.response;
 
 import android.support.annotation.Nullable;
 
-import com.example.instagramlib.model.InstagramLoggedUser;
-import com.example.instagramlib.model.InstagramLoginChallenge;
+import com.example.instagramlib.model.instagram.InstagramLoggedUser;
+import com.example.instagramlib.model.instagram.InstagramLoginChallenge;
 
 import lombok.Getter;
 import lombok.Setter;

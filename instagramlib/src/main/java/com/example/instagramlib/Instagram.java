@@ -16,15 +16,14 @@
 
 package com.example.instagramlib;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.net.Network;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 
-import com.example.instagramlib.model.InstagramLoginPayload;
+import com.example.instagramlib.dataProvider.DataProvider;
+import com.example.instagramlib.model.database.InstagramDatabaseUser;
+import com.example.instagramlib.model.instagram.InstagramLoggedUser;
+import com.example.instagramlib.model.instagram.InstagramLoginPayload;
 import com.example.instagramlib.model.payload.InstagramSyncFeaturesPayload;
 import com.example.instagramlib.request.InstagramAutoCompleteUserListRequest;
 import com.example.instagramlib.request.InstagramFetchHeadersRequest;
@@ -34,28 +33,30 @@ import com.example.instagramlib.request.InstagramLoginRequest;
 import com.example.instagramlib.request.InstagramRequest;
 import com.example.instagramlib.request.InstagramSyncFeaturesRequest;
 import com.example.instagramlib.response.InstagramLoginResponse;
-import com.example.instagramlib.response.StatusResponse;
 import com.example.instagramlib.util.InstagramUtil;
+import com.example.instagramlib.util.Util;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.HttpURLConnection;
-import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import okhttp3.Cookie;
 import okhttp3.HttpUrl;
@@ -158,12 +159,11 @@ public class Instagram implements Serializable {
 
         InstagramLoginPayload loginPayload = InstagramLoginPayload.builder().username(getUsername()).password(getPassword()).guid(getUuid()).device_id(this.deviceId).phone_id(InstagramUtil.generateUuid(true))._csrftoken(this.getOrFetchCsrf()).build();
         InstagramLoginResponse loginResponse = this.sendRequest(new InstagramLoginRequest(loginPayload));
-
         /**
          * If everything is good, keep the login flow.
          */
         if (loginResponse != null && loginResponse.getStatus().equalsIgnoreCase(STATUS_OK)) {
-            Log.d(TAG, "asdasd: all good ");
+            saveUser(loginResponse.getLoggedUser());
             setUserId(loginResponse.getLoggedUser().getPk());
             setRankToken(getUserId() + "_" + getUuid());
             this.isLoggedIn = true;
@@ -172,19 +172,6 @@ public class Instagram implements Serializable {
             this.sendRequest(new InstagramAutoCompleteUserListRequest());
             this.sendRequest(new InstagramGetInboxRequest());
             this.sendRequest(new InstagramGetRecentActivityRequest());
-        }
-
-
-        if (loginResponse == null) {
-            Log.d(TAG, "asdasd: null");
-        } else if (loginResponse.getLoginChallenge() != null) {
-            Log.d(TAG, "asdasd: challenge: " + loginResponse.getLoginChallenge());
-        } else if (!loginResponse.isPasswordValid()) {
-            Log.d(TAG, "asdasd: password not valid");
-        } else if (!loginResponse.isUsernameValid()) {
-            Log.d(TAG, "asdasd: username not valid");
-        } else {
-            Log.d(TAG, "asdasd: all good " + loginResponse.getLoggedUser());
         }
 
         return loginResponse;
@@ -226,7 +213,7 @@ public class Instagram implements Serializable {
     }
 
     /**
-     * Pulls out cookie when we hold in our cookiejar.
+     * Pulls out cookie which we have in our cookiejar.
      *
      * @return value for the cookieName.
      */
@@ -236,12 +223,32 @@ public class Instagram implements Serializable {
         Map<String, String> cookies = new HashMap<>();
 
         Cookie cookie;
-        while (!var2.hasNext()) {
+        while (var2.hasNext()) {
             cookie = (Cookie) var2.next();
 
             cookies.put(cookie.name(), cookie.value());
         }
+
         return new JSONObject(cookies).toString();
+    }
+
+    /**
+     * Pulls out cookie which we have in our cookiejar.
+     *
+     * @return list of cookies
+     */
+    public List<Cookie> getAllCookiesAsList() {
+        Iterator var2 = this.client.cookieJar().loadForRequest(url).iterator();
+
+        List<Cookie> list = new ArrayList<>();
+
+        Cookie cookie;
+        while (var2.hasNext()) {
+            cookie = (Cookie) var2.next();
+            list.add(cookie);
+        }
+
+        return list;
     }
 
     /**
@@ -261,4 +268,19 @@ public class Instagram implements Serializable {
         }
     }
 
+    private void saveUser(InstagramLoggedUser loggedUser) {
+
+        try {
+            JSONArray jsonArray = Util.cookieJarToJson(getAllCookiesAsList());
+
+            InstagramDatabaseUser databaseUser = new InstagramDatabaseUser(
+                    loggedUser.getUsername(),
+                    loggedUser.getPk(),
+                    jsonArray.toString(),
+                    loggedUser.getProfilePicUrl()
+            );
+
+            DataProvider.getSingletone(context).getInstagramDataProvider().saveInstagramDatabaseUser(databaseUser);
+        } catch (Exception exception) {}
+    }
 }

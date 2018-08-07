@@ -16,7 +16,6 @@
 
 package com.example.instagramlib.request;
 
-import com.example.instagramlib.util.Constants;
 import com.example.instagramlib.util.InstagramConstants;
 import com.example.instagramlib.util.InstagramUtil;
 
@@ -44,7 +43,7 @@ public abstract class InstagramPostRequest<T> extends InstagramRequest<T> {
 
     @Override
     public T execute() throws IOException {
-        Request request = (new Request.Builder()).url(BASE_URL + this.getUrl())
+        Request request = (new Request.Builder()).url(InstagramConstants.API_URL + this.getUrl())
                 .addHeader("X-IG-Capabilities", "36r/Bw==")
                 .addHeader("X-IG-Connection-Type", "WiFi")
                 .addHeader("X-IG-Connection-Speed", "33kbps")

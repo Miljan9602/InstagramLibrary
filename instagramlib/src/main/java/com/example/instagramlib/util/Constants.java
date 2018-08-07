@@ -40,9 +40,6 @@ public interface Constants {
 
     String STATUS_OK = "ok";
 
-    String BASE_URL = "https://i.instagram.com/api/v1/";
-    //String BASE_URL = "http://192.168.0.107:8888/api/v1/";
-
     // Errors
     String ERROR_INVALID_CREDENTIALS = "You must provide a username and password to login.";
     String ERROR_REQUIRES_LOGIN = "Need to login first!";
