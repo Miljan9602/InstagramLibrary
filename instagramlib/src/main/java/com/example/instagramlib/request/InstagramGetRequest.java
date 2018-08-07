@@ -22,9 +22,12 @@ import com.example.instagramlib.util.Constants;
 import com.example.instagramlib.util.InstagramConstants;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static com.example.instagramlib.util.Constants.*;
 
 /**
  * InstagramLib API
@@ -38,12 +41,12 @@ public abstract class InstagramGetRequest<T> extends InstagramRequest<T> {
 
     @Override
     public String getMethod() {
-        return Constants.GET_METHOD;
+        return GET_METHOD;
     }
 
     @Override
     public T execute() throws IOException {
-        Request request = (new Request.Builder()).url("https://i.instagram.com/api/v1/" + this.getUrl())
+        Request request = (new Request.Builder()).url(BASE_URL + this.getUrl())
                 .addHeader("X-IG-Capabilities", "36r/Bw==")
                 .addHeader("X-IG-Connection-Type", "WiFi")
                 .addHeader("X-IG-Connection-Speed", "33kbps")
@@ -61,5 +64,4 @@ public abstract class InstagramGetRequest<T> extends InstagramRequest<T> {
         String content = response.body().string();
         return this.parseResult(resultCode, content);
     }
-
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.instagramlib.exception;
+package com.example.instagramlib.util;
 
 /**
  * InstagramLib API
@@ -22,5 +22,10 @@ package com.example.instagramlib.exception;
  * @author Miljan Rakita on 8/7/18.
  * rakitamiljan@yahoo.com
  */
-public class IncorrectPasswordException extends InstagramException {
+public interface InstagramErrorType {
+
+
+    String ERROR_TYPE_BAD_PASSWORD = "bad_password";
+    String ERROR_TYPE_CHALLENGE_REQUIRED = "checkpoint_challenge_required";
+
 }

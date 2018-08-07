@@ -32,7 +32,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         final Context appContext = InstrumentationRegistry.getTargetContext();
 
-
         assertEquals("com.example.instagramlib.test", appContext.getPackageName());
     }
 }

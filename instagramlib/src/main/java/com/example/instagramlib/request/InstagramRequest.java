@@ -49,7 +49,7 @@ public abstract class InstagramRequest<T> {
         return null;
     }
 
-    public abstract T parseResult(int var1, String var2);
+    public abstract T parseResult(int resultCode, String content);
 
     public abstract T execute() throws IOException;
 

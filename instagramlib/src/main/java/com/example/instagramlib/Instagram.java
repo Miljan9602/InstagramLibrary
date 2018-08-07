@@ -159,7 +159,11 @@ public class Instagram implements Serializable {
         InstagramLoginPayload loginPayload = InstagramLoginPayload.builder().username(getUsername()).password(getPassword()).guid(getUuid()).device_id(this.deviceId).phone_id(InstagramUtil.generateUuid(true))._csrftoken(this.getOrFetchCsrf()).build();
         InstagramLoginResponse loginResponse = this.sendRequest(new InstagramLoginRequest(loginPayload));
 
+        /**
+         * If everything is good, keep the login flow.
+         */
         if (loginResponse != null && loginResponse.getStatus().equalsIgnoreCase(STATUS_OK)) {
+            Log.d(TAG, "asdasd: all good ");
             setUserId(loginResponse.getLoggedUser().getPk());
             setRankToken(getUserId() + "_" + getUuid());
             this.isLoggedIn = true;
@@ -168,7 +172,19 @@ public class Instagram implements Serializable {
             this.sendRequest(new InstagramAutoCompleteUserListRequest());
             this.sendRequest(new InstagramGetInboxRequest());
             this.sendRequest(new InstagramGetRecentActivityRequest());
+        }
 
+
+        if (loginResponse == null) {
+            Log.d(TAG, "asdasd: null");
+        } else if (loginResponse.getLoginChallenge() != null) {
+            Log.d(TAG, "asdasd: challenge: " + loginResponse.getLoginChallenge());
+        } else if (!loginResponse.isPasswordValid()) {
+            Log.d(TAG, "asdasd: password not valid");
+        } else if (!loginResponse.isUsernameValid()) {
+            Log.d(TAG, "asdasd: username not valid");
+        } else {
+            Log.d(TAG, "asdasd: all good " + loginResponse.getLoggedUser());
         }
 
         return loginResponse;

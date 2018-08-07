@@ -27,6 +27,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.example.instagramlib.util.Constants.*;
+
 /**
  * InstagramLib API
  *
@@ -37,12 +39,12 @@ public abstract class InstagramPostRequest<T> extends InstagramRequest<T> {
 
     @Override
     public String getMethod() {
-        return Constants.POST_METHOD;
+        return POST_METHOD;
     }
 
     @Override
     public T execute() throws IOException {
-        Request request = (new Request.Builder()).url("https://i.instagram.com/api/v1/" + this.getUrl())
+        Request request = (new Request.Builder()).url(BASE_URL + this.getUrl())
                 .addHeader("X-IG-Capabilities", "36r/Bw==")
                 .addHeader("X-IG-Connection-Type", "WiFi")
                 .addHeader("X-IG-Connection-Speed", "33kbps")

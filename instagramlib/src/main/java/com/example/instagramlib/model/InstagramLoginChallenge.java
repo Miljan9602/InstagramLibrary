@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-package com.example.instagramlib.exception;
+package com.example.instagramlib.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * InstagramLib API
@@ -22,6 +27,18 @@ package com.example.instagramlib.exception;
  * @author Miljan Rakita on 8/7/18.
  * rakitamiljan@yahoo.com
  */
-public class InvalidUserException extends InstagramException {
+
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+public class InstagramLoginChallenge {
+
+    private String url;
+    private String apiPath;
+    private boolean hideWebviewHeader;
+    private boolean lock;
+    private boolean logout;
+    private boolean nativeFlow;
 
 }

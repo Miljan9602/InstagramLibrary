@@ -22,5 +22,9 @@ package com.example.instagramlib.exception;
  * @author Miljan Rakita on 8/7/18.
  * rakitamiljan@yahoo.com
  */
-public class ThrottledException {
+public class ThrottledException extends Exception {
+
+    public ThrottledException(String message) {
+        super(message);
+    }
 }

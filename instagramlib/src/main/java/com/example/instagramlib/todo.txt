@@ -1,0 +1,5 @@
+Check why login sometimes give status code 500.
+
+Use some library for json.
+
+Add .gitignore for account data
