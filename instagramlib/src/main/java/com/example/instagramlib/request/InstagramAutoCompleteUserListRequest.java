@@ -14,13 +14,14 @@ import static android.content.ContentValues.TAG;
  */
 public class InstagramAutoCompleteUserListRequest extends InstagramGetRequest<StatusResponse> {
 
+    private static final String TAG = "InstagramAutoCompleteUs";
     public String getUrl() {
         return "friendships/autocomplete_user_list/";
     }
 
-    public StatusResponse parseResult(int resultCode, String content) {
+    public StatusResponse parseResult(int resultCode, String status) {
         Log.d(TAG, "parseResult: " + resultCode);
-        Log.d(TAG, "parseResult: " + content);
-        return new StatusResponse();
+        Log.d(TAG, "parseResult: " + status);
+        return new StatusResponse(status, resultCode);
     }
 }

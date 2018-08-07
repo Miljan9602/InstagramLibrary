@@ -14,13 +14,14 @@ import static android.content.ContentValues.TAG;
  */
 public class InstagramGetInboxRequest extends InstagramGetRequest<StatusResponse> {
 
+    private static final String TAG = "InstagramGetInboxReques";
     public String getUrl() {
         return "direct_v2/inbox/?";
     }
 
-    public StatusResponse parseResult(int resultCode, String content) {
+    public StatusResponse parseResult(int resultCode, String status) {
         Log.d(TAG, "parseResult: " + resultCode);
-        Log.d(TAG, "parseResult: " + content);
-        return new StatusResponse();
+        Log.d(TAG, "parseResult: " + status);
+        return new StatusResponse(status, resultCode);
     }
 }

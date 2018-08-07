@@ -19,6 +19,7 @@ import static android.content.ContentValues.TAG;
  */
 public class InstagramSyncFeaturesRequest extends InstagramPostRequest<StatusResponse> {
 
+    private static final String TAG = "InstagramSyncFeaturesRe";
     private InstagramSyncFeaturesPayload payload;
 
     public InstagramSyncFeaturesRequest(@NonNull InstagramSyncFeaturesPayload payload) {
@@ -50,9 +51,9 @@ public class InstagramSyncFeaturesRequest extends InstagramPostRequest<StatusRes
     }
 
     @Override
-    public StatusResponse parseResult(int var1, String var2) {
-        Log.d(TAG, "parseResult: " + var1);
-        Log.d(TAG, "parseResult: " + var2);
-        return null;
+    public StatusResponse parseResult(int resultCode, String status) {
+        Log.d(TAG, "parseResult: " + resultCode);
+        Log.d(TAG, "parseResult: " + status);
+        return new StatusResponse(status, resultCode);
     }
 }

@@ -15,7 +15,11 @@
  */
 package com.example.instagramlib.response;
 
+import android.support.annotation.Nullable;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 
 /**
  * InstagramLib API
@@ -23,8 +27,32 @@ import lombok.Getter;
  * @author Miljan Rakita on 7/19/18.
  * rakitamiljan@yahoo.com
  */
+
 public class StatusResponse {
 
+    private static final String TAG = StatusResponse.class.getSimpleName();
+
+    @NonNull
     @Getter
     protected String status;
+
+    @NonNull
+    @Getter
+    protected int statusCode;
+
+    @Nullable
+    @Getter
+    protected String message;
+
+
+    public StatusResponse(String status, int statusCode) {
+        this.status = status;
+        this.statusCode = statusCode;
+    }
+
+    public StatusResponse(String status, int statusCode, String message) {
+        this.status = status;
+        this.statusCode = statusCode;
+        this.message = message;
+    }
 }

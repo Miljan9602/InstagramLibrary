@@ -31,6 +31,7 @@ import lombok.Setter;
  */
 public abstract class InstagramRequest<T> {
 
+    private static final String TAG = InstagramRequest.class.getSimpleName();
 
     @Setter
     @Getter

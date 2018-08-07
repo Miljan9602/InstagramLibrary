@@ -7,14 +7,20 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
+
+import com.example.instagramlib.Instagram;
+
+import java.io.IOException;
 
 import lombok.NonNull;
 
 public class MainActivity extends AppCompatActivity {
 
     int REQUEST_CODE_INTERNET_PERMISSIONS = 2;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

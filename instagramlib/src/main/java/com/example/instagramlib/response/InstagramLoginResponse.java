@@ -17,4 +17,17 @@ public class InstagramLoginResponse extends StatusResponse {
     @Getter
     private InstagramLoggedUser loggedUser;
 
+
+    public InstagramLoginResponse(String status, int statusCode) {
+        super(status, statusCode);
+    }
+
+    public InstagramLoginResponse(String status, int statusCode, String message) {
+        super(status, statusCode, message);
+    }
+
+    public InstagramLoginResponse(String status, int statusCode, InstagramLoggedUser loggedUser) {
+        super(status, statusCode);
+        this.loggedUser = loggedUser;
+    }
 }

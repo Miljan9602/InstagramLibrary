@@ -38,10 +38,10 @@ public class InstagramFetchHeadersRequest extends InstagramGetRequest<StatusResp
     }
 
     @Override
-    public StatusResponse parseResult(int var1, String var2) {
-        Log.d(TAG, "parseResult: " + var1);
-        Log.d(TAG, "parseResult: " + var2);
-        return new StatusResponse();
+    public StatusResponse parseResult(int resultCode, String status) {
+        Log.d(TAG, "parseResult: " + resultCode);
+        Log.d(TAG, "parseResult: " + status);
+        return new StatusResponse(status, resultCode);
     }
 
     public boolean requiresLogin() {

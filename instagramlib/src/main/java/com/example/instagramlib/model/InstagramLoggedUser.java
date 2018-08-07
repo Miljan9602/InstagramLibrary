@@ -12,5 +12,5 @@ import lombok.Setter;
 public class InstagramLoggedUser {
 
     @Getter
-    private String pk;
+    private String pk = "2128436070";
 }

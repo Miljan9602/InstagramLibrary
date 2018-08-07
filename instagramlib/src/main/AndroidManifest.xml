@@ -1,2 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.instagramlib" />
+    package="com.example.instagramlib">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
+</manifest>

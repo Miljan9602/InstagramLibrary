@@ -2,6 +2,7 @@ package com.example.instagramlib.request;
 
 import android.util.Log;
 
+import com.example.instagramlib.model.InstagramLoggedUser;
 import com.example.instagramlib.model.InstagramLoginPayload;
 import com.example.instagramlib.response.InstagramLoginResponse;
 import com.example.instagramlib.response.StatusResponse;
@@ -18,6 +19,7 @@ import static android.content.ContentValues.TAG;
  */
 public class InstagramLoginRequest extends InstagramPostRequest<InstagramLoginResponse> {
 
+    private static final String TAG = "InstagramLoginRequest";
     private InstagramLoginPayload payload;
 
     public InstagramLoginRequest(InstagramLoginPayload payload) {
@@ -49,10 +51,12 @@ public class InstagramLoginRequest extends InstagramPostRequest<InstagramLoginRe
     }
 
     @Override
-    public InstagramLoginResponse parseResult(int var1, String var2) {
-        Log.d(TAG, "parseResult: " + var1);
-        Log.d(TAG, "parseResult: " + var2);
-        return new InstagramLoginResponse();
+    public InstagramLoginResponse parseResult(int resultCode, String status) {
+        Log.d(TAG, "parseResult: " + resultCode);
+        Log.d(TAG, "parseResult: " + status);
+        Log.d(TAG, "parseResult: " + instagram.getAllCookies());
+
+        return new InstagramLoginResponse("ok", resultCode, new InstagramLoggedUser());
     }
 
     public boolean requiresLogin() {

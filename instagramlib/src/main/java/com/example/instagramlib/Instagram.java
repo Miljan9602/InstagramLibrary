@@ -19,6 +19,7 @@ package com.example.instagramlib;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.net.Network;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -33,6 +34,7 @@ import com.example.instagramlib.request.InstagramLoginRequest;
 import com.example.instagramlib.request.InstagramRequest;
 import com.example.instagramlib.request.InstagramSyncFeaturesRequest;
 import com.example.instagramlib.response.InstagramLoginResponse;
+import com.example.instagramlib.response.StatusResponse;
 import com.example.instagramlib.util.InstagramUtil;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
@@ -40,11 +42,16 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import lombok.Builder;
@@ -147,7 +154,7 @@ public class Instagram implements Serializable {
     }
 
 
-    public InstagramLoginResponse login() throws IOException {
+    public InstagramLoginResponse login() throws Exception {
 
         InstagramLoginPayload loginPayload = InstagramLoginPayload.builder().username(getUsername()).password(getPassword()).guid(getUuid()).device_id(this.deviceId).phone_id(InstagramUtil.generateUuid(true))._csrftoken(this.getOrFetchCsrf()).build();
         InstagramLoginResponse loginResponse = this.sendRequest(new InstagramLoginRequest(loginPayload));
@@ -200,6 +207,25 @@ public class Instagram implements Serializable {
         } while (!cookie.name().equalsIgnoreCase(cookieName));
 
         return cookie;
+    }
+
+    /**
+     * Pulls out cookie when we hold in our cookiejar.
+     *
+     * @return value for the cookieName.
+     */
+    public String getAllCookies() {
+        Iterator var2 = this.client.cookieJar().loadForRequest(url).iterator();
+
+        Map<String, String> cookies = new HashMap<>();
+
+        Cookie cookie;
+        while (!var2.hasNext()) {
+            cookie = (Cookie) var2.next();
+
+            cookies.put(cookie.name(), cookie.value());
+        }
+        return new JSONObject(cookies).toString();
     }
 
     /**
